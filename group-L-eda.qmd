@@ -1,0 +1,295 @@
+---
+title: "SDS 220 Phase II"
+author: "Linh Pham"
+date: 2022-09-16
+self-contained: true
+editor: 
+  markdown: 
+    wrap: 72
+format: html
+---
+
+# Hypotheses:
+
+## Hypothesis 1:
+
+We hypothesize that there will be a positive linear relationship between
+a lego set's price and the number of pieces in the set, meaning more
+pieces will be associated with a higher price.
+
+## Hypothesis 2:
+
+We hypothesize that themes affect the price of a Lego set in some ways,
+but we are not sure in what way.
+
+# Section 1: Descriptive Statistics and Univariate Summaries
+
+## First part of the section
+
+Categorizing 40 distinct Lego themes into 10 larger themes:
+
+```{r}
+#| echo: false
+#| message: false
+library(tidyverse)
+library(openintro)
+data <- read_csv("/Users/phamlethuylinh/Desktop/group-L-data.csv")
+#Grouping Themes into LargerThemes
+data$LargerThemes <- ifelse(data$Theme %in% c("Harry Potter", "Minions", "Powerpuff Girls", "Jurassic World", "Spider-Man", "Trolls World Tour", "Stranger Things", "Disney", "Batman", "THE LEGO MOVIE 2", "LEGO Frozen 2", "Star Wars"), "MoviesThemes", ifelse(data$Theme %in% c("Hidden Side", "Architecture", "Creator Expert"), "ArchitectureTheme", ifelse(data$Theme %in% c("DUPLO", "DOTS", "Juniors", "LEGO Education"), "Kids Theme", ifelse(data$Theme %in% c("Speed Champions", "Xtra", "Minifigures"), "Objects Theme", ifelse(data$Theme %in% c("BrickHeadz", "LEGO Art", "LEGO Brick Sketches"), "Home Decor Theme", ifelse(data$Theme %in% c("Minecraft", "Overwatch", "LEGO Super Mario"), "Video Games Theme", ifelse(data$Theme %in% c("Ideas", "Creator 3-in-1", "Classic"), "Freestyle Theme", ifelse(data$Theme %in% c("City", "Friends", "NINJAGO", "MonkieKid", "Unikitty!"), "Lego Universe Theme", ifelse(data$Theme %in% c("Powered UP", "Technic"), "Toys With Remote Theme", "Other")))))))))
+unique(data$LargerThemes, na.rm = TRUE)
+clean <- na.omit(data)
+```
+
+```{r}
+library(ggplot2)
+library(fivethirtyeight)
+library(viridis)
+
+data_dist <- clean |>
+  group_by(LargerThemes) |>
+  dplyr::mutate(count = n())
+```
+
+The number of rows in our dataset is 740. The original file has 1304
+rows, but we don't plan on including NA values in our exploratory data
+analysis, so we removed all NA values from our dataset.
+
+## Second part of the section
+
+### Part a
+
+There's no missing values left in our dataset.
+
+### Part b
+
+```{r}
+#| echo: false
+#| message: false
+# Barplot
+ggplot(data_dist, aes(x=LargerThemes, y=log(count))) + 
+  geom_col(fill = "black") + coord_flip() +
+  scale_fill_viridis_b() + theme_classic() + labs(title = "Frequency of Lego Themes in The Sample", subtitle = "All Sets Without Missing Data In Our Sample", y = "Number of Sets", x = "Name of Themes") + theme_minimal()
+```
+
+### Part c
+
+```{r}
+#| echo: false
+#| message: false
+library(ggplot2)
+# Basic histogram
+ggplot(clean, aes(x=Pieces)) + 
+  geom_histogram(binwidth=70, color="black", fill="white") + geom_vline(aes(xintercept=median(Pieces)),
+            color="blue", linetype="dashed", size=1) + labs(title = "Distribution of Number of Pieces ", subtitle = "All Sets Without Missing Data in The Sample", y = "Number of Sets", x = "Number of Pieces") 
+```
+
+The min value of pieces (in a Lego set) in our data set is 1 piece, and
+the max value in the same category is 6020 pieces. In the histogram we
+created, R has automatically considered both values as outliers.
+
+This distribution of Lego pieces is a unimodal model, with a great
+skewness to the right. The blue line signifies the median of the model,
+which is 235. We can see a lot of extremely large values with low
+frequencies falling in the right of the line, and a moderate number of
+values that are smaller than the median, but has high frequency (\>100),
+on the left. This means that there are a few sets that has less or equal
+to 235 pieces, and a variety of unusual large sets with more than 235
+Lego pieces.
+
+## Third part of the section
+
+### Table 1
+
+|                      | Overall Study Population (n=740) |
+|----------------------|----------------------------------|
+| **Variable**         | **Median (Q1, Q3)**              |
+| Price (in USD)       | 29.99 (14.99, 59.99)             |
+| Number of Pieces     | 235 (117.75, 518.25)             |
+| **Theme Type**       | **Mean (Proportion)**            |
+| Architecture         | 41 (5.5%)                        |
+| Freestyle            | 56 (7.6%)                        |
+| Home Decor           | 14 (1.9%)                        |
+| Kids                 | 52 (7%)                          |
+| Lego Universe        | 230 (31.1%)                      |
+| Movies               | 205 (27.7%)                      |
+| Objects              | 17 (2.3%)                        |
+| Other                | 50 (6.8%)                        |
+| Toys with Remote     | 31 (4.2%)                        |
+| Video Games          | 44 (5.9%)                        |
+
+Summary: 
+
+Numerical data are summarized using median (Q1, Q3); categorical data are summarized using n (%)
+
+To avoid calculating mistakes that can be made by outliers, our group chose the median and interquartile range as our measure of center. For numeric variables, which are Price and Pieces, the median for Price is 29.99$ and the median for Pieces is 117.75 pieces. This means that 50% or less of the Lego sets are cheaper than 29.99\$ and have less or equal to 117.75 pieces. The interquartile range for Price is 45\$, and the interquartile range for Pieces is 400.5 pieces. 
+
+We can see that the middle 50% of the number of pieces in a lego set (as displayed by the graph), has a large spread of 400.5. The median is also much smaller than the interquartile range, indicating a large spread from the median to Q3, which corresponds to the right skewness that we observed. In contrast, the IQR of Price is close to the median (29.99\$ vs 45\$), implying that the spread is smaller than Pieces.
+
+For the categorical variables Theme, there are 10 Themes, which we reported in Table 1. The themes are distributed as follow: Movies Theme, 205 sets, 27.7%; Architecture Theme, 41 sets, 5.5%; Freestyle Theme, 56 sets, 7.6%; Home Decor Theme, 14 sets, 1.9%; Kids Theme, 52 sets, 7%; Lego Universe Theme, 230 sets, 31.1%; Objects Theme, 17 sets, 2.3%, Toys With Remote Theme, 31 sets, 4.2%; Video Games Theme, 44 sets, 5.9%.
+
+# Section 2: Bivariate Relationship
+
+## First part of the section
+
+Informative graphical summary of the bivariate relationship of interest: Price vs Pieces and Price vs Theme
+
+```{r}
+#| echo: false
+#| message: false
+library(ggplot2)
+
+# simple scatterplot
+ggplot(clean, 
+       aes(x = Pieces, 
+           y = Price)) +
+  geom_point() + 
+  labs(x = "Number of Pieces",
+       y = "Recommended Price In Dollars",
+       title = "Recommended Price vs Number of Pieces in Lego sets",
+       subtitle = "Sets without missing data in the sample") +  geom_smooth(method = "lm")
+```
+
+```{r}
+#| echo: false
+#| message: false
+library(scales)
+ggplot(data_dist, 
+       aes(y = factor(LargerThemes), 
+           x = Price, 
+           color = LargerThemes)) +
+  geom_jitter(alpha = 0.7,
+              size = 1.5) + 
+  scale_x_continuous(label = dollar) +
+  labs(title = "Lego Sets' Prices by Themes", 
+       x = "",
+       y = "Recommended Price in Dollars") +
+  theme_light() +
+  theme(legend.position = "none")
+```
+
+## Second part of the section
+
+```{r}
+# Fitting the new multiple linear regression model
+fit.cat <- lm(Price ~ LargerThemes, data=clean)
+summary(fit.cat)
+```
+
+Our first linear regression model looks at the relationship between the
+theme of a lego set (the independent variable), and the price of the
+lego set (the dependent variable). Theme is also a nominal variable, and
+price is a continuous variable. In the equation for a linear regression
+line, our y value is the dependent variable which is the price that is
+based off of the theme of the lego set, and our y-intercept, which is the ground value for price, is 89.258 dollars. This mean that a regular set with no theme would be 89.258 dollars.
+
+We have 10 slopes which each represent how the lego sets' price varies among the different themes.For example, we will interpret two estimated slopes, and this will take into account two themes, Home Decor Theme (slope: -47.911) and Freestyle Theme (slope:-52.125) . This means that the Home Decor Theme set will be 47.911 dollars cheaper than the price of a regular lego set, and the Freestyle Theme will be about 52.125 dollars cheaper than the regular lego set.The model may not be entirely accurate since we categorized the themes into larger buckets, but it still provides a statistical ground for
+further exploration.
+
+```{r}
+res <- resid(fit.cat)
+plot(fitted(fit.cat), res)
+abline(0,0)
+```
+
+For the first model, the residual plot represents a categorical
+variable, so there are 10 price levels based on the themes, which is
+visualized by 10 stacks of dots. For this model, we'll say using a
+linear regression model is reasonable, since the points are randomly
+dispersed and don't seem to follow an apparent trend.
+
+```{r}
+fit.num <- lm(Price ~ Pieces, data=clean)
+summary(fit.num)
+```
+
+Our second linear regression model looks at the relationship between the
+number of pieces in a lego set (independent variable) and the price of
+the lego set (dependent variable). The y-intercept of this equation is
+approximately 10.84, meaning the price for a lego set with 0 pieces will
+be \$10.84. The slope is approximately .0812, meaning that for every one
+lego piece increase in a set, the price will be \$.0812 higher. There is a positive relationship between the number of pieces in a set and its price, like we hypothesized.
+
+```{r}
+res <- resid(fit.num)
+plot(fitted(fit.num), res)
+abline(0,0)
+```
+
+For the second residual model, the residual plot represents the price of
+the lego sets based on the number of pieces in the lego set, so there
+are no levels since the number of pieces is a continuous variable. For
+this model, we will say that using a linear regression model is
+unreasonable, since the points appear to be in a cluster at the
+beginning of the line, and it seems like the plots have a bell-curved
+pattern.
+
+# Section 3:
+
+-   The variable "Theme" has 41 levels, so we grouped the levels of this
+    variable into 10 broader categories which became the levels of a new
+    variable we called "LargerThemes."
+
+-   We excluded the missing values in the data from our analysis, which
+    may affect the accuracy of our regression model. This was done to
+    avoid overcomplicating our analysis, since we don't know enough to
+    do much with these missing values.
+
+-   Although the Lego sets are mostly priced at under 300 dollars, we
+    found some unusual prices. There is an outlier, which is a Star Wars
+    set that cost about 650 dollars. The sets that cost more than 400
+    dollars are mostly part of a movie franchise.
+    
+```{r}
+library(infer)
+init.lm <- lm(Price~Pieces, data=clean)
+# Create the permutation null using infer
+null_dist_lm <- data %>%
+specify(Price~Pieces) %>%
+hypothesize(null="independence") %>%
+generate(5000, type = "permute") %>%
+calculate("slope")
+null_dist_lm %>% 
+  get_p_value(coef(init.lm)[2], direction="both")
+# Visualizing the null distribution and p-value
+ggplot(null_dist_lm, aes(x = stat)) +
+geom_density(fill = "darkgray") +
+geom_vline(xintercept = coef(init.lm)[2], linetype = 2, col="red")
+```
+```{r}
+# Loading in the data
+library(openintro)
+# Calculating the observed F statistic
+observed_f_statistic <- data %>%
+specify(Price ~ LargerThemes) %>%
+hypothesize(null = "independence") %>%
+calculate(stat = "F")
+# Generating the null distribution using randomization
+null_dist <- data %>%
+specify(Price ~ LargerThemes) %>%
+hypothesize(null = "independence") %>%
+generate(reps = 5000, type = "permute") %>%
+calculate(stat = "F")
+# Randomization-based p-value
+null_dist %>%
+get_p_value(obs_stat = observed_f_statistic,
+direction = "greater")
+# P-value from the reference F distribution
+pf(observed_f_statistic$stat, 10-1, 740-10, lower.tail = FALSE)
+# Visualizing the null distributions and test statistic
+null_dist %>%
+visualize(method="both") +
+shade_p_value(observed_f_statistic,
+direction = "greater")
+```
+```{r}
+# Fitting a linear model with a categorical predictor
+lm <- lm(Price~as.factor(LargerThemes), data=clean)
+# Generating the ANOVA table and conducting the F test
+lm
+```
+```{r}
+reg_ex1 <- lm(Price~Pieces+LargerThemes,data=data)
+print(reg_ex1)
+```
+
+

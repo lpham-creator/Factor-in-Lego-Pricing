@@ -1,0 +1,84 @@
+---
+title: "Group L Statistical Analysis Plan"
+format: html
+editor: visual
+self-contained: true
+---
+
+## 1. Introduction
+
+Lego is a line of plastic constructions that are manufactured by LEGO, one of the largest toy companies in the world to this date. We are a group of 3 interdisciplinary students, who want to inspect which factors affect the recommended price that LEGO puts out for its sets. This project is a data-driven approach to Lego pricing, aiming to build models and tests to investigate elements that may increase the expense of a Lego set. Our research topic is relevant to business intelligence since it will give LEGO insight into how it wants to alter its price based on the number of pieces in the Lego set and the theme of the Lego set. This project is also beneficial to customers, as by analyzing the dataset even more in-depth, customers will be able to see which characteristics would usually make a set more expensive. This will help LEGO appeal to its customers more easily, and customers cleverly spend their money.
+
+## 2. Study Objectives and Endpoints
+
+In our project, the response variable that we plan to study is the recommended price of Lego sets, which is the price that LEGO recommends for its products. This price can differ from the Amazon price, and it is the official price listed on all LEGO official sites. We study this variable because we want to have more insights into how LEGO evaluates its products.
+
+### Primary Hypothesis:
+
+We hypothesize that there will be a positive linear relationship between the mean recommended price and the mean number of pieces of Lego sets in this dataset, meaning more pieces will be associated with a higher price.
+
+### Supplementary Hypothesis:
+
+We hypothesize that themes affect the mean recommended price of Lego sets in some ways, but we are not sure in what way.
+
+### Data:
+
+The dataset we use is a modified version of the original data originally published by Peterson & Zeigler (2021). The modified data set contains 1,305 observations of 15 variables, each describing some attribute of a Lego set. These variables are described below. Except for the Pages variable, all other variables were scraped from brickset.com.
+
+### Objectives:
+
+-   Implementing hypothesis testing using permutation on the primary hypothesis and ANOVA on the supplementary hypothesis
+
+-   Stating the outcome using a p-value
+
+-   Providing thorough data analysis before testing
+
+### Endpoints:
+
+-   Rejecting or failing to reject the null hypothesis
+
+-   A p-value in correspondance to the observed values
+
+-   Clear, readable graphs with all five components of context
+
+## 3. Study Population
+
+Our study population is all the Lego sets in the United States released from 2018 to 2020, and the observational units for this population are all the Lego sets in our sample that don't contain NA values (740 sets). We include various themed sets in our sample, spanning from Disney themes such as Moana and Star Wars to Lego themes that could appeal to kids like Ninjago, Friends, and Unikitty!. Currently, we intend to analyze the average number of pieces among all the sets and its relationship to the average recommended price. Additionally, we want to remove the observations that have N/A values from the dataset when we create our cleaned dataset. The limitation that we anticipate in our study is that N/A values being removed from the dataset will make our sample smaller by 40%, which may decrease the generalizability of our results.
+
+## 4. Study Variables
+
+In our analysis, we will study the explanatory variables Pieces and LargerThemes. Pieces is a discrete numerical variable describing the mean number of pieces among all the Lego sets included in our sample. We derived LargerThemes, a nominal categorical variable, from the variable Theme by sorting its 41 levels into 10 buckets that group associated themes together. The Theme of each set is the group of Lego products that the set was designed to be part of, and the level of this variable was determined by Lego and recorded in our data; we created and assigned levels of LargerThemes by sorting levels of Theme into categories based on what we thought seemed most reasonable.
+
+## 5.A. Primary Analysis
+
+For the first model, we hypothesize that the mean number of pieces in Lego sets affects the sets' mean recommended price. The null hypothesis states that there is no association between the number of pieces and the mean price of Lego sets, and the alternative hypothesis states that there is an association between the number of pieces and the mean price of Lego sets.
+
+The format for a linear regression line is $y = \beta_0 + \beta_1x$. We plan to fit a linear regression model to test out these hypotheses.
+
+$H_0: \beta_1 = 0$
+
+$H_A: \beta_1 \neq 0$
+
+The fitted regression line that we made in R is: $y = 10.835 + 0.082x$, in which $10.835$ is the intercept and $0.082$ is the slope. The intercept means that the average price for a Lego set with 0 pieces will be about $\$10.835$, and the slope indicates that for every one Lego piece increase in a set, the mean price will be $\$0.082$ higher.
+
+Our goal is to find if the predictor variable (the mean number of pieces among Lego sets) and the response variable (the mean price of Lego sets) have a statistically significant relationship with each other. In other words, we want to know if the $\beta_1$ value in our fitted line is unusually large if the null is true. We plan to construct a hypothesis test using permutation to test for significance. With the infer package in R, we'll randomly re-assign (permute) the number of pieces to 470 sets in our dataset, keeping the prices fixed. We plan to permute 5000 times in R.
+
+We'll then use R to calculate the p-value that corresponds to our $\beta_1$ value, which indicates the probability that the estimated slope in our fitted line appears in real life if the null is true. If this p-value is smaller than 0.05, we reject the null and conclude that the mean number of pieces does have a linear relationship with the mean recommended price of the sets.
+
+## 5.B. Secondary Analysis
+
+We will use ANOVA for the supplementary hypothesis, which is that the mean recommended price of Lego sets is not the same for all themed groups. The level ArchitectureTheme will be used as our reference level for this analysis, as this was the reference level chosen by R. After implementing ANOVA, we will conduct an F-test to calculate the p-value and conclude our hypothesis test. We assume that the observations in the samples are independent of each other, which makes the dataset qualified for this approach.
+
+Null hypothesis: The mean recommended prices among all 10 groups of Lego theme are equal to each other. Alternative hypothesis: The theme of of a group of Lego sets has some effect on the group's mean recommended price.
+
+$H_0$: The mean price is the same for each level of LargerThemes $\mu_1 = \mu_2 = ... = \mu_{10}$
+
+$H_A$: The mean price is not the same for each level of LargerThemes, i.e. at least one mean is different from the others
+
+## 6. Missing Data
+
+To address missing data, we removed all observations for which one or more variables were NA from our dataset. We also removed the variables Pages and Weight, as these had a lot of missing variables and were not needed for our analysis. This has reduced the generalizability of our results, as about 40% of observational units in the original dataset had missing values.
+
+## 7. Statistical Significance and Multiple Testing
+
+Our significance level $\alpha$ is 0.05. Although we are testing for differences in mean price between more than two levels of a categorical variable, we will control the type I error rate by using ANOVA to test for any differences between the means, as opposed to conducting multiple tests comparing two groups.
