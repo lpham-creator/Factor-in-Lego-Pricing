@@ -5,15 +5,15 @@ Our group sets up a primary hypothesis about the relationship between a Lego set
 - infer
 - tidyverse
 - openintro
-Running the main file on your own computer might not be convenient and potentially too time consuming due to the large raw files used in this study. In order to have the smoothest experience, we highly recommend accessing our google collab jupyter notebook through the following linked folder:
+
 ## Cleaning and Preprocessing
 - Fetched and loaded data from [Peterson and Ziegler (2021](https://www.tandfonline.com/doi/full/10.1080/26939169.2021.1946450) website.
 - Cleaned data by
-+ removing columns that didn't affect airport efficiency based on our findings
-+ removing all missing values (565 observations)
+removing columns that didn't affect airport efficiency based on our findings
+removing all missing values (565 observations)
 - Preprocessed data by
-+ grouping 40 Lego themes into 10 larger theme buckets to fit in to linear model
-+ percentiles, rates, and positions (reported in Table 1)
+grouping 40 Lego themes into 10 larger theme buckets to fit in to linear model
+percentiles, rates, and positions (reported in Table 1)
 ## Our Hypothesis
 - $H_0: \beta_1 = 0$: the mean number of pieces in Lego sets affects the lego sets' mean recommended price
 - $H_A: \beta_1 \neq 0$: there is no association between mean number of pieces and mean price of lego sets
