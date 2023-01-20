@@ -1,4 +1,4 @@
-# Factor-in-Lego-Pricing
+# Factors in Lego Pricing
 Our group sets up a primary hypothesis about the relationship between a Lego set's recommended price and its number of pieces, and a supplementary one about how Lego themes affect the recommended price of a set.
 ## Libraries used:
 - ggplot2
@@ -7,7 +7,7 @@ Our group sets up a primary hypothesis about the relationship between a Lego set
 - openintro
 
 ## Cleaning and Preprocessing
-- Fetched and loaded data from [Peterson and Ziegler (2021](https://www.tandfonline.com/doi/full/10.1080/26939169.2021.1946450) website.
+- Fetched and loaded data from [Peterson and Ziegler (2021)](https://www.tandfonline.com/doi/full/10.1080/26939169.2021.1946450) website.
 - Cleaned data by
 removing columns that didn't affect airport efficiency based on our findings
 removing all missing values (565 observations)
