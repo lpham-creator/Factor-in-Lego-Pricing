@@ -27,7 +27,7 @@ percentiles, rates, and positions (reported in Table 1).
 ## Results
 - For both tests we get our p-value = 0. We think that R rounds it to this value, meaning that the p-value is smaller than 0.05. Hence, we reject the null hypothesis and are able to conclude that the mean recommended price and the number of pieces in a Lego set has a statistically significant relationship with each other.
 - Our analysis finds statistically significant evidence of an association between pieces and price, and between theme and price, with theme not found to be a confounder in the first relationship.
-- View the report to see a more complete version of our study.
+- View the [report](https://github.com/lpham-creator/Factor-in-Lego-Pricing/blob/main/group-L-report.pdf) to see a more complete version of our study.
 ## Application
 - This project opens new ways for LEGO to alter their price based on characteristics of the set, and helps customers predict the expense of a Lego set.
 ## Limits
