@@ -8,7 +8,7 @@ Our group sets up a primary hypothesis about the relationship between a Lego set
 ## Cleaning and Preprocessing
 - Fetched and loaded data from [Peterson and Ziegler (2021)](https://www.tandfonline.com/doi/full/10.1080/26939169.2021.1946450) website.
 - Cleaned data by
-removing columns that didn't affect airport efficiency based on our findings
+removing columns that aren't needed for our 
 removing all missing values (565 observations).
 - Preprocessed data by
 grouping 40 Lego themes into 10 larger theme buckets to fit in to linear model
